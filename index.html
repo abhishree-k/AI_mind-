@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 AI MIND READER v2.0</title>
+    <title>🔮 AI Mind Reader Experiment</title>
     <style>
         body {
-            background: #000;
+            background: #111;
             color: #0af;
             font-family: 'Courier New', monospace;
             margin: 0;
@@ -16,7 +16,6 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            cursor: none;
         }
         .container {
             text-align: center;
@@ -38,52 +37,40 @@
             border-radius: 5px;
             white-space: pre-line;
         }
-        #brainwave {
-            width: 100%;
-            height: 100px;
-            background: #000;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
+        #start-btn {
             background: #0af;
-            animation: wave 3s infinite linear;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
         }
-        @keyframes wave {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        #start-btn:hover {
+            background: #0ff;
+            box-shadow: 0 0 15px #0af;
         }
-        .pulse {
-            animation: pulse 1s infinite alternate;
+        .glitch {
+            animation: glitch 1s infinite;
         }
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 red; transform: skewX(0deg); }
+            25% { text-shadow: -2px 0 blue; transform: skewX(5deg); }
+            50% { text-shadow: 2px 0 green; transform: skewX(-5deg); }
+            100% { text-shadow: -2px 0 yellow; transform: skewX(0deg); }
         }
-        #hidden-message {
+        .hidden {
             display: none;
-            font-size: 3rem;
-            color: #f00;
-            text-shadow: 0 0 10px #f00;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="pulse">🔮 AI MIND READER v2.0</h1>
-        <p>WARNING: This AI extracts thoughts. Do NOT resist.</p>
-        <div id="brainwave">
-            <div class="wave"></div>
-        </div>
-        <div id="ai-output">> [SYSTEM READY] Focus on a question...</div>
-        <button id="start-btn" style="display: none;">BEGIN SCAN</button>
-        <div id="hidden-message">ACCESS DENIED. JUST KIDDING! 🤡</div>
+        <h1 class="glitch">🔮 AI MIND-READER EXPERIMENT</h1>
+        <p>WARNING: This AI can predict your thoughts. Proceed with caution.</p>
+        <button id="start-btn">BEGIN SCAN</button>
+        <div id="ai-output" class="hidden"></div>
     </div>
 
     <audio id="creepy-sound" loop>
@@ -91,67 +78,48 @@
     </audio>
 
     <script>
+        const startBtn = document.getElementById("start-btn");
         const aiOutput = document.getElementById("ai-output");
         const creepySound = document.getElementById("creepy-sound");
-        const hiddenMessage = document.getElementById("hidden-message");
-        const startBtn = document.getElementById("start-btn");
 
-        // AI responses (more personalized)
+        // Fake AI responses
         const responses = [
-            "INITIALIZING NEURAL LINK...",
-            "DETECTING BRAINWAVES...",
-            "CALIBRATING TO YOUR MIND...",
-            "WARNING: HIGH LEVELS OF SKEPTICISM DETECTED.",
-            "THIS AI KNOWS YOU THINK THIS IS FAKE.",
-            "ANALYZING... YOU ARE THINKING OF A NUMBER BETWEEN 1 AND 10.",
-            "IS IT... 7? (DON'T LIE.)",
-            "ACCESSING SUBCONSCIOUS...",
-            "YOU ARE NOW WONDERING HOW THIS WORKS.",
-            "SYSTEM ERROR: TOO MUCH CURIOSITY.",
-            "FINAL ANALYSIS: YOU'VE BEEN PRANKED! 😂",
+            "Initializing neural interface...",
+            "Scanning brainwaves...",
+            "Detecting thought patterns...",
+            "Analyzing subconscious...",
+            "WARNING: High levels of skepticism detected.",
+            "Accessing memories...",
+            "Found: You once doubted this AI could read minds.",
+            "Prediction: You are thinking... 'This is fake.'",
+            "Correction: You are now thinking... 'Wait, is this real?'",
+            "Final analysis: You have been pranked. 🤡",
             " ",
             " ",
-            "This was an experiment in gullibility.",
+            "Just kidding! You fell for it! 😂",
             " ",
-            "Now go prank someone else! 🎉"
+            " ",
+            "Now go challenge someone else with this!"
         ];
 
-        // Simulate AI "thinking"
-        function simulateAI() {
+        startBtn.addEventListener("click", () => {
+            startBtn.classList.add("hidden");
+            aiOutput.classList.remove("hidden");
             creepySound.play();
-            document.body.style.cursor = 'none';
-
+            
             let i = 0;
             const interval = setInterval(() => {
-                aiOutput.innerHTML += '\n' + responses[i];
+                aiOutput.innerHTML += responses[i] + "<br>";
                 aiOutput.scrollTop = aiOutput.scrollHeight;
                 i++;
-                
-                if (i === 6) { // Fake "mind-reading" moment
-                    setTimeout(() => {
-                        aiOutput.innerHTML += '\n> [AI] I SEE IT. YOU ARE IMPRESSED.';
-                    }, 1500);
-                }
-
                 if (i >= responses.length) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        hiddenMessage.style.display = 'block';
-                        // CRASH EFFECT
-                        document.body.style.animation = 'glitch 0.5s infinite';
-                        setTimeout(() => {
-                            window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank"); // Rickroll
-                        }, 1000);
+                        window.open("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcW5oM2VqY3B6d3JwYzV4eGZ4dGJ6N2RqY2Z1dGZ1bGZqZGVhaWZwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7aTskHEUdgCQAXde/giphy.gif", "_blank");
                     }, 2000);
                 }
-            }, 2000);
-        }
-
-        // Start when user focuses
-        setTimeout(() => {
-            aiOutput.innerHTML += '\n> [AI] FOCUS ON A QUESTION...';
-            setTimeout(simulateAI, 3000);
-        }, 2000);
+            }, 1500);
+        });
     </script>
 </body>
 </html>
